@@ -1,0 +1,17 @@
+services:
+  db:
+    image: postgres:16
+    container_name: grupo04_postgres
+    environment:
+      POSTGRES_DB: salao_beleza
+      POSTGRES_USER: grupo04
+      POSTGRES_PASSWORD: grupo04
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./sql/01_schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
+      - ./sql/02_dados.sql:/docker-entrypoint-initdb.d/02_dados.sql
+
+volumes:
+  postgres_data:
