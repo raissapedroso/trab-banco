@@ -1,203 +1,177 @@
-# Trabalho Prático de Banco de Dados
+# Sistema de Gerenciamento de Salão de Beleza - Banco de Dados
 
-Este projeto apresenta a modelagem e implementação de um banco de dados relacional para um sistema de gerenciamento de salão de beleza. O banco foi desenvolvido em PostgreSQL e pode ser executado localmente com Docker, terminal `psql` ou pgAdmin.
+## Integrantes
+-   Maria de Lurdes 
+-   Raissa Pedroso
 
 ## Tecnologias utilizadas
 
-- PostgreSQL
-- Docker
-- pgAdmin
-- SQL
+-   PostgreSQL
+-   pgAdmin 4 (opcional)
+-   Docker
+-   Docker Compose
 
-## Estrutura sugerida do projeto
+------------------------------------------------------------------------
 
-```text
-projeto-banco-dados/
-├── README.md
-├── scripts/
-│   ├── 01_criacao_tabelas.sql
-│   ├── 02_insercao_dados.sql
-│   └── 03_consultas.sql
-└── diagramas/
-    └── modelo_er.png
+## Estrutura do projeto
+
+``` text
+.
+├── docker-compose.yml
+├── sql/
+│   ├── ddl.sql          # Criação das tabelas
+│   ├── dml.sql          # Massa de dados
+│   └── consultas.sql    # Consultas do trabalho
+└── README.md
 ```
 
-> Os nomes dos arquivos podem ser adaptados conforme a organização do seu projeto.
+> Caso os arquivos SQL estejam em outro diretório, apenas ajuste os
+> caminhos dos comandos.
 
-## 1. Subindo o banco com Docker
+------------------------------------------------------------------------
 
-Para criar e iniciar um container PostgreSQL, execute:
+## 1. Iniciar o banco
 
-```bash
-docker run --name bd-postgres \
-  -e POSTGRES_USER=postgres \
-  -e POSTGRES_PASSWORD=postgres \
-  -e POSTGRES_DB=salao_beleza \
-  -p 5432:5432 \
-  -d postgres
+Na pasta do projeto execute:
+
+``` bash
+docker compose up -d
 ```
 
-Esse comando cria um banco chamado `salao_beleza`, com usuário `postgres` e senha `postgres`.
+Verifique se o container está em execução:
 
-## 2. Verificando se o container está rodando
-
-Execute:
-
-```bash
+``` bash
 docker ps
 ```
 
-Se o container aparecer na lista, o PostgreSQL está ativo.
+------------------------------------------------------------------------
 
-Caso ele esteja parado, use:
+## 2. Entrar no PostgreSQL
 
-```bash
-docker start bd-postgres
+Se o container estiver com o nome **bd-postgres**:
+
+``` bash
+docker exec -it bd-postgres psql -U postgres
 ```
 
-Para parar o container:
+Caso o nome seja diferente:
 
-```bash
-docker stop bd-postgres
+``` bash
+docker ps
 ```
 
-## 3. Acessando o PostgreSQL pelo terminal
+e utilize o nome exibido.
 
-Para entrar no terminal do PostgreSQL dentro do container, execute:
+------------------------------------------------------------------------
 
-```bash
-docker exec -it bd-postgres psql -U postgres -d salao_beleza
+## 3. Criar o banco
+
+Dentro do PostgreSQL:
+
+``` sql
+CREATE DATABASE salao;
 ```
 
-Dentro do `psql`, alguns comandos úteis são:
+Conectar ao banco:
 
-```sql
+``` sql
+\c salao
+```
+
+------------------------------------------------------------------------
+
+## 4. Executar os scripts
+
+Ainda no terminal do PostgreSQL:
+
+``` sql
+\i /caminho/para/sql/ddl.sql
+```
+
+Depois:
+
+``` sql
+\i /caminho/para/sql/dml.sql
+```
+
+Exemplo em Linux:
+
+``` sql
+\i /app/sql/ddl.sql
+```
+
+Exemplo no Windows (psql local):
+
+``` sql
+\i C:/Users/SeuUsuario/Projeto/sql/ddl.sql
+```
+
+------------------------------------------------------------------------
+
+## 5. Conferir se tudo foi criado
+
+Listar tabelas:
+
+``` sql
 \dt
 ```
 
-Lista as tabelas criadas.
+Visualizar alguns registros:
 
-```sql
+``` sql
 SELECT * FROM cliente;
+SELECT * FROM profissional;
+SELECT * FROM servico;
+SELECT * FROM agendamento;
 ```
 
-Consulta os dados da tabela `cliente`.
+------------------------------------------------------------------------
 
-Para sair do `psql`, use:
+## 6. Executar as consultas
 
-```sql
-\q
+``` sql
+\i /caminho/para/sql/consultas.sql
 ```
 
-## 4. Executando os scripts SQL pelo terminal
+Ou execute cada consulta individualmente no pgAdmin.
 
-Se os arquivos estiverem dentro da pasta `scripts`, execute os comandos abaixo na pasta raiz do projeto.
+------------------------------------------------------------------------
 
-### Criar as tabelas
+## Utilizando o pgAdmin
 
-```bash
-docker exec -i bd-postgres psql -U postgres -d salao_beleza < scripts/01_criacao_tabelas.sql
+1.  Abra o pgAdmin.
+2.  Conecte ao servidor PostgreSQL.
+3.  Abra o banco **salao**.
+4.  Abra o Query Tool.
+5.  Execute primeiro o arquivo **ddl.sql**.
+6.  Execute o arquivo **dml.sql**.
+7.  Execute o arquivo **consultas.sql**.
+
+------------------------------------------------------------------------
+
+## Observações
+
+-   O projeto utiliza chaves primárias com
+    `GENERATED ALWAYS AS IDENTITY`.
+-   As restrições de integridade (PRIMARY KEY, FOREIGN KEY, UNIQUE e
+    CHECK) já estão implementadas.
+-   Os dados de teste são inseridos automaticamente pelo arquivo
+    `dml.sql`.
+-   As consultas presentes em `consultas.sql` demonstram o funcionamento
+    do banco e atendem aos requisitos do trabalho.
+
+------------------------------------------------------------------------
+
+## Limpar o ambiente
+
+Parar os containers:
+
+``` bash
+docker compose down
 ```
 
-### Inserir os dados iniciais
+Remover também os volumes (apagando o banco):
 
-```bash
-docker exec -i bd-postgres psql -U postgres -d salao_beleza < scripts/02_insercao_dados.sql
+``` bash
+docker compose down -v
 ```
-
-### Executar as consultas
-
-```bash
-docker exec -i bd-postgres psql -U postgres -d salao_beleza < scripts/03_consultas.sql
-```
-
-## 5. Configurando o banco no pgAdmin
-
-Para acessar o banco pelo pgAdmin, crie um novo servidor com as seguintes configurações:
-
-### Aba General
-
-- Name: `bd-postgres`
-
-### Aba Connection
-
-- Host name/address: `localhost`
-- Port: `5432`
-- Maintenance database: `salao_beleza`
-- Username: `postgres`
-- Password: `postgres`
-
-Depois de conectar, o banco estará disponível em:
-
-```text
-Servers > bd-postgres > Databases > salao_beleza
-```
-
-## 6. Ordem correta de execução
-
-A ordem recomendada para rodar o projeto é:
-
-1. Subir o container PostgreSQL.
-2. Executar o script de criação das tabelas.
-3. Executar o script de inserção dos dados.
-4. Executar as consultas SQL.
-5. Conferir os resultados no terminal ou no pgAdmin.
-
-## 7. Como testar se deu certo
-
-Após executar os scripts, entre no banco:
-
-```bash
-docker exec -it bd-postgres psql -U postgres -d salao_beleza
-```
-
-Liste as tabelas:
-
-```sql
-\dt
-```
-
-Faça uma consulta simples:
-
-```sql
-SELECT * FROM cliente;
-```
-
-Se as tabelas e os registros aparecerem, o banco foi configurado corretamente.
-
-## 8. Possíveis problemas
-
-### Erro: container com esse nome já existe
-
-Se aparecer erro dizendo que o container `bd-postgres` já existe, inicie ele com:
-
-```bash
-docker start bd-postgres
-```
-
-Ou remova o container antigo e crie novamente:
-
-```bash
-docker rm bd-postgres
-```
-
-Depois execute novamente o comando `docker run`.
-
-### Erro: porta 5432 já está em uso
-
-Isso significa que outro PostgreSQL já está rodando na máquina. Você pode parar o serviço existente ou trocar a porta do Docker, por exemplo:
-
-```bash
-docker run --name bd-postgres \
-  -e POSTGRES_USER=postgres \
-  -e POSTGRES_PASSWORD=postgres \
-  -e POSTGRES_DB=salao_beleza \
-  -p 5433:5432 \
-  -d postgres
-```
-
-Nesse caso, no pgAdmin, use a porta `5433`.
-
-## 9. Observação
-
-Este README foi criado para facilitar a configuração do ambiente, a execução dos scripts SQL e a validação do banco de dados tanto pelo terminal quanto pelo pgAdmin.
