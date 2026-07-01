@@ -1,5 +1,5 @@
 -- pergunta de negócio:
--- quais clientes possuem mais agendamentos cadastrados?
+-- 01: quais clientes possuem mais agendamentos cadastrados?
 SELECT
     cliente.id_cliente,
     cliente.prenome,
@@ -14,7 +14,7 @@ GROUP BY
     cliente.sobrenome
 ORDER BY quantidade_agendamentos DESC;
 
--- quais profissionais realizaram mais atendimentos?
+-- 02: quais profissionais realizaram mais atendimentos?
 SELECT profissional.id_profissional, 
     profissional.prenome,
     profissional.sobrenome,
@@ -28,9 +28,21 @@ GROUP BY
     profissional.sobrenome
 ORDER BY quantidade_atendimentos DESC;
 
--- quais serviços são mais realizados?
-SELECT 
-    servico.id_servico,
-    servico.preco,
+-- 04: qual serviços são mais realizados?
+SELECT servico.id_servico,
     servico.descricao_servico,
+    COUNT(*) AS quantidade
+FROM servico
+JOIN servico_agendado
+    ON servico.id_servico = servico_agendado.id_servico
+GROUP BY servico.id_servico, servico.descricao_servico
+ORDER BY quantidade DESC
+LIMIT 1;
     
+-- 05: quais cobranças estão pendentes ou atrasadas?
+SELECT id_cobranca, valor_total, status_cobranca
+FROM cobranca
+WHERE status_cobranca IN ('pendente', 'atrasado');
+
+-- 06: qual foi o faturamento total do salão?
+SELECT SUM(pagamento.id_pagamento) FROM pagamento;
