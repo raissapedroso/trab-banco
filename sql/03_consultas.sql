@@ -47,7 +47,9 @@ FROM cobranca
 WHERE status_cobranca IN ('pendente', 'atrasado');
 
 -- 05: qual foi o faturamento total do salão?
-SELECT SUM(pagamento.id_pagamento) FROM pagamento;
+SELECT
+    SUM(pagamento.valor_pago) AS faturamento_total
+FROM pagamento;
 
 -- 06: Qual cliente gastou mais dinheiro no salão?
 SELECT

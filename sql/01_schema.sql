@@ -98,7 +98,7 @@ CREATE TABLE cobranca (
     valor_desconto NUMERIC(10,2) NOT NULL DEFAULT 0 CHECK (valor_desconto >= 0),
     data_emissao DATE NOT NULL DEFAULT CURRENT_DATE,
     status_cobranca VARCHAR(20) NOT NULL DEFAULT 'pendente'
-        CHECK (status_cobranca IN ('pendente', 'pago', 'cancelado')),
+        CHECK (status_cobranca IN ('pendente', 'pago', 'atrasado', 'cancelado')),
 
     FOREIGN KEY (id_agendamento) REFERENCES agendamento(id_agendamento)
         ON DELETE CASCADE

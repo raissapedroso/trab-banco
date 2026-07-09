@@ -12,6 +12,8 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./sql/01_schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
       - ./sql/02_dados.sql:/docker-entrypoint-initdb.d/02_dados.sql
+      - ./sql/03_consultas.sql:/scripts/03_consultas.sql
+      - ./sql/04_validacao.sql:/scripts/04_validacao.sql
 
 volumes:
   postgres_data:

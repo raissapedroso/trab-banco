@@ -37,6 +37,7 @@ grupo_04_entrega_2/
 
 ├── README.md
 ├── compose.yaml
+├── .env.example
 ├── sql/
 │   ├── 01_schema.sql
 │   ├── 02_dados.sql
@@ -45,8 +46,9 @@ grupo_04_entrega_2/
 ├── diagramas/
 │   ├── modelo_conceitual.pdf
 │   └── modelo_logico.pdf
-└── artigo/
-    └── grupo_04_entrega_2_artigo.pdf
+└── output/
+    └── pdf/
+        └── grupo_04_entrega_2_artigo_completo_revisado.pdf
 ```
 
 ---
@@ -171,7 +173,7 @@ Caso deseje executar todas as consultas de uma única vez:
 ```bash
 docker exec -it grupo04_postgres \
 psql -U grupo04 -d salao_beleza \
--f /docker-entrypoint-initdb.d/03_consultas.sql
+-f /scripts/03_consultas.sql
 ```
 
 As consultas respondem perguntas de negócio como:
@@ -195,7 +197,7 @@ Para executar os testes:
 ```bash
 docker exec -it grupo04_postgres \
 psql -U grupo04 -d salao_beleza \
--f /docker-entrypoint-initdb.d/04_validacao.sql
+-f /scripts/04_validacao.sql
 ```
 
 Esse arquivo contém testes para validar as restrições implementadas no banco de dados.
@@ -296,3 +298,9 @@ O sistema contempla apenas a camada de banco de dados, não possuindo interface 
 O ambiente foi desenvolvido para ser totalmente reproduzível utilizando Docker Compose.
 
 Após a execução dos comandos apresentados neste documento, o avaliador poderá reconstruir integralmente o banco de dados, executar as consultas, realizar os testes de validação e verificar o funcionamento do projeto sem necessidade de configurações adicionais.
+
+---
+
+# Declaração de Uso de Inteligência Artificial
+
+Foram utilizadas ferramentas de Inteligência Artificial, incluindo ChatGPT/Codex, como apoio à revisão textual, conferência dos critérios de avaliação, verificação de coerência entre artigo e scripts SQL, e identificação de inconsistências técnicas. O conteúdo foi revisado pelo grupo, que permanece responsável pela autoria, pelas decisões de modelagem e pela correção final da entrega.
