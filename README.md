@@ -300,4 +300,4 @@ Após a execução dos comandos apresentados neste documento, o avaliador poder�
 
 # Declaração de Uso de Inteligência Artificial
 
-Foram utilizadas ferramentas de Inteligência Artificial, incluindo ChatGPT/Codex, como apoio à revisão textual, conferência dos critérios de avaliação, verificação de coerência entre artigo e scripts SQL, e identificação de inconsistências técnicas. O conteúdo foi revisado pelo grupo, que permanece responsável pela autoria, pelas decisões de modelagem e pela correção final da entrega.
+Foram utilizadas ferramentas de Inteligência Artificial, incluindo ChatGPT e Gemini, como apoio à revisão textual, conferência dos critérios de avaliação, verificação de coerência entre artigo e scripts SQL, e identificação de inconsistências técnicas. O conteúdo foi revisado pelo grupo, que permanece responsável pela autoria, pelas decisões de modelagem e pela correção final da entrega.
