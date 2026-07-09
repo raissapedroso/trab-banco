@@ -46,9 +46,6 @@ grupo_04_entrega_2/
 ├── diagramas/
 │   ├── modelo_conceitual.pdf
 │   └── modelo_logico.pdf
-└── output/
-    └── pdf/
-        └── grupo_04_entrega_2_artigo_completo_revisado.pdf
 ```
 
 ---
